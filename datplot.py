@@ -5,6 +5,8 @@ import os
 import re
 import argparse
 import locale
+import operator 
+import numpy
 from matplotlib import axis
 from matplotlib import rc, rcParams
 from matplotlib import pyplot as plt
@@ -30,34 +32,16 @@ def decode(s):
     return unicode(s, encoding=params['encoding'])
 
 
-def readFile(filename):
-    datafile = open(filename, "r")
-    lines    = datafile.readlines()
+def readFile(filename, cols):
+    print cols
+    with open(filename, mode="r") as f:
+        return numpy.loadtxt(f, comments="!", usecols=cols)
 
-    xs = []
-    ys = []
-    for line in lines:
-        res = line.split()
-        xs.append(float(res[0]))
-        ys.append(float(res[1]))
-
-    return (xs, ys)
-
-
-def mirror(xs, ys):
-    result_x = []
-    result_y = []
-    for i in xrange(len(xs)):
-        x = xs[i]
-        y = ys[i]
-        result_x.append(x)
-        result_y.append(y)
-
-        if i!=0:
-            result_x = [-x] + result_x
-            result_y = [y]  + result_y
-
-    return (result_x, result_y)
+def mirror(dat):
+    a = dat.copy()
+    a[:,0] *= -1
+    a = numpy.vstack((a, dat))
+    return numpy.array(sorted(a, key=operator.itemgetter(0)))
 
 
 def addhandler(parser, name, nargs=None, type=None, handler=None):
@@ -70,12 +54,12 @@ def addhandler(parser, name, nargs=None, type=None, handler=None):
     parser.add_argument(name, nargs=nargs, type=type, action=PlotAction)
 
 
-def plot(f):
-    (xs, ys) = readFile(f)
+def plot(f, cols):
+    dat = readFile(f, cols)
     if params["mirror"]:
-        (xs, ys) = mirror(xs, ys)
+        dat = mirror(dat)
 
-    plt.plot(xs, ys)
+    plt.plot(dat[:,0], dat[:,1])
 
 
 def xcaption(s):
@@ -138,6 +122,6 @@ parser.add_argument("files", nargs='*')
 
 result = parser.parse_args()
 for f in result.files:
-    plot(decode(f))
+    plot(decode(f), (0, 1))
 
 plt.savefig(result.outfile, format=params['format'])
