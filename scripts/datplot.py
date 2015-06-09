@@ -33,9 +33,22 @@ def decode(s):
 
 
 def readFile(filename, cols):
-    print cols
+    # Thanks to http://stackoverflow.com/a/4703508/1447225.
+    rex_pattern = r"""
+        [-+]?                  # optional sign
+        (?: (?: \d* \. \d+ ) | # .1 .12 .123 etc 9.1 etc 98.1 etc
+            (?: \d+ \.? ))     # 1. 12. 123. etc 1 12 123 etc
+        (?: [Ee] [+-]? \d+ )?  # followed by optional exponent part if desired """
+    rex = re.compile(rex_pattern, re.VERBOSE)
+
+    result = []
     with open(filename, mode="r") as f:
-        return numpy.loadtxt(f, comments="!", usecols=cols)
+        for line in f:
+            vals = map(float, rex.findall(line))
+            if len(vals) >= 2:
+                result.append(tuple(vals))
+
+    return numpy.array(result)
 
 def mirror(dat):
     a = dat.copy()
@@ -103,6 +116,7 @@ options = [
     ("ylabel",      1, None,     lambda v:   plt.ylabel(decode(v))),
     ("xlim",        2, float,    lambda a,b: plt.xlim(a,b)),
     ("ylim",        2, float,    lambda a,b: plt.ylim(a,b)),
+    ("ylog",        1, bool,     lambda v:   plt.yscale('log')),
     ("xcaption",    1, None,     lambda v:   xcaption(decode(v))),
     ("ycaption",    1, None,     lambda v:   ycaption(decode(v))),
     ("plot",        1, None,     lambda f:   plot(decode(f)))]
