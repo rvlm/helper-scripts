@@ -5,7 +5,7 @@ import os
 import re
 import argparse
 import locale
-import operator 
+import operator
 import numpy
 from matplotlib import axis
 from matplotlib import rc, rcParams
@@ -60,7 +60,6 @@ def plot(f, cols):
         dat = mirror(dat)
 
     plt.plot(dat[:,0], dat[:,1])
-
 
 def xcaption(s):
     tickpad  = rcParams['xtick.major.pad']
