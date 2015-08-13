@@ -8,4 +8,4 @@ def omit_empty_items(sequence):
     if sequence is None:
         return None
     else:
-        return filter(lambda x: x (is not None) and (len(x) != 0), sequence)
+        return filter(lambda x: (x is not None) and (len(x) != 0), sequence)
