@@ -6,7 +6,7 @@ import sys
 
 
 # Utility function to read whole file contents.
-def filecontents(fname):
+def slurp(fname):
     with open(os.path.join(os.path.dirname(__file__), fname)) as f:
         return f.read()
 
@@ -25,33 +25,32 @@ class PyTest(TestCommand):
             sys.exit(errno)
 
 setup(
-    name          = "rvlm.labhelpers",
-    package_dir   = {'': "src"},
-    packages      = ["rvlm", "rvlm.labhelpers"],
+    name               = "rvlm.labhelpers",
+    version            = "0.0.6",
+    packages           = ["rvlm", "rvlm.labhelpers"],
     namespace_packages = ["rvlm"],
-    version       = "0.0.6",
-    description   = (
-        "Various helper script (and and a helper library) which were useful"
-        "for my experiments in the lab #426 (devoted to ultra-wideband signals "
-        "and antennas) during my PhD at Voronezh State University."),
-    author        = "Pavel Kretov",
-    author_email  = "firegurafiku@gmail.com",
-    license       = "MIT",
-    url           = "https://github.com/rvlm/rvlm-labhelpers",
-    keywords      = ["helpers"],
-    classifiers   = [
-        "Programming Language :: Python",
-        "Programming Language :: Python :: 2.6",
-        "Programming Language :: Python :: 2.7",
-        "Programming Language :: Python :: 3",
-        "Development Status :: 2 - Pre-Alpha",
-        "Environment :: Console",
-        "Intended Audience :: Developers",
-        "Intended Audience :: Science/Research",
-        "License :: OSI Approved :: MIT License",
-        "Natural Language :: English",
-        "Operating System :: POSIX",
-        "Topic :: Software Development :: Libraries :: Python Modules" ],
-    long_description = filecontents("README.rst"),
-    tests_require = ['pytest'],
-    cmdclass      = {'test': PyTest})
+    package_dir        = {'': "src"},
+    author             = "Pavel Kretov",
+    author_email       = "firegurafiku@gmail.com",
+    license            = "MIT",
+    url                = "https://github.com/rvlm/rvlm-labhelpers",
+    keywords           = ["helpers"],
+    requires           = ["numpy", "rvlm.entrypoint"],
+    tests_require      = ['pytest'],
+    cmdclass           = {'test': PyTest},
+    description        = ("Helper library and scripts which were useful for "
+                          "my experiments at the lab #426 (devoted to UWB "
+                          "signals and antennas) during my PhD at Voronezh "
+                          "State University."),
+    classifiers        = ["Programming Language :: Python",
+                          "Programming Language :: Python :: 2.6",
+                          "Programming Language :: Python :: 2.7",
+                          "Programming Language :: Python :: 3",
+                          "Development Status :: 2 - Pre-Alpha",
+                          "Environment :: Console",
+                          "Intended Audience :: Developers",
+                          "Intended Audience :: Science/Research",
+                          "License :: OSI Approved :: MIT License",
+                          "Natural Language :: English",
+                          "Operating System :: POSIX" ],
+    long_description   = slurp("README.rst"))
