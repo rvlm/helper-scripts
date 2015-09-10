@@ -2,7 +2,7 @@ import itertools
 import glob
 import re
 import numpy
-from rvlm.labhelpers.trivia import omit_empty_items
+from rvlm.labhelpers.trivia import omit_empty_items, tuple1
 
 def read_agilent_waveform(stream):
     """
@@ -46,27 +46,5 @@ def read_files(filename_pattern, reader=numpy.loadtxt):
     for filename in glob.iglob(filename_pattern):
         with open(filename, mode="r") as f:
             result[filename] = reader(f)
-
-    return result
-
-def filter_by_key(data, pattern, keytype=float):
-    """
-    """
-    pattern = re.escape(pattern)
-    pattern = pattern.replace(re.escape("{}"), "([\\d.Ee+-]+)")
-    phi_rex = re.compile(pattern)
-
-    def extractKey(name):
-        try:
-            m = phi_rex.match(name)
-            return float(m.group(1))
-        except:
-            return None
-
-    result = {}
-    for name, value in data.items():
-        key = keytype(extractKey(name))
-        if key is not None:
-            result[key] = value
 
     return result
