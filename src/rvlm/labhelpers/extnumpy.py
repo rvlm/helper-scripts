@@ -1,12 +1,15 @@
+"""
+
+"""
 import numpy
 from functools              import partial
-from rvlm.labhelpers.trivia import applyfs, unpackf
+from rvlm.labhelpers.trivia import applyfs
+
 
 def array2d(data):
     """
-
-    :param data:
-    :return:
+    Makes a 2D `numpy` array out of `data`. This function surely returns two
+    dimensional array, even then data
     """
     arr = numpy.array(data, ndmin=2)
     if len(arr.shape) != 2:
@@ -17,14 +20,19 @@ def array2d(data):
 
     return arr
 
+
 def hstack_skip_empty(*arrays):
+    """
+    """
     return numpy.hstack(tuple(filter(lambda a: a.size > 0, arrays)))
+
 
 def filter_along_axis(pred, axis, array):
     """ http://stackoverflow.com/a/26154854/1447225
     """
     bool_array = numpy.apply_along_axis(pred, axis, array)
     return array[bool_array]
+
 
 def tabularf(array, funcs = []):
     """
@@ -33,6 +41,7 @@ def tabularf(array, funcs = []):
     fvals = numpy.apply_along_axis(partial(applyfs, funcs), 1, array)
     return hstack_skip_empty(args, fvals)
 
+
 def tabulardf(dic, funcs = []):
     """
     """
@@ -40,6 +49,7 @@ def tabulardf(dic, funcs = []):
     vals  = array2d(dic.values())
     fvals = numpy.apply_along_axis(partial(applyfs, funcs), 1, args)
     return hstack_skip_empty(args, vals, fvals)
+
 
 def tabularmf(axes, funcs = []):
     """

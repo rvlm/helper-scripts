@@ -4,10 +4,12 @@ from setuptools.command.test import test as TestCommand
 import os
 import sys
 
+
 # Utility function to read whole file contents.
 def filecontents(fname):
     with open(os.path.join(os.path.dirname(__file__), fname)) as f:
         return f.read()
+
 
 # Helpful class for pytest integration. It was taken without modifications
 # from https://pytest.org/latest/goodpractises.html.
@@ -24,6 +26,7 @@ class PyTest(TestCommand):
 
 setup(
     name          = "rvlm.labhelpers",
+    package_dir   = {'': "src"},
     packages      = ["rvlm", "rvlm.labhelpers"],
     namespace_packages = ["rvlm"],
     version       = "0.0.6",

@@ -1,6 +1,5 @@
+# -*- coding: utf-8 -*-
 """
-.. coding: utf-8
-
 `rvlm.labhelpers.trivia`: trivial things Python lacks
 =====================================================
 
@@ -26,10 +25,9 @@ def omit_empty_items(sequence):
     return None if sequence is None \
         else filter(lambda x: (x is not None) and (len(x) != 0), sequence)
 
-
 def tuple1(lst):
     """
-    Converts list to tuple or single value. If argument :param:`lst` is a list
+    Converts list to tuple or single value. If argument `lst` is a list
     (or other enumerable) holding more than one item, then this function
     returns a tuple with the same values with their original order preserved.
     If argument hold only single value, that value itself is returned.
@@ -42,7 +40,7 @@ def tuple1(lst):
 
 def head(sequence):
     """
-    Returns first item from `sequence` or :cons:`None` if sequence is empty.
+    Returns first item from `sequence` or :const:`None` if sequence is empty.
     """
     try:
         return iter(sequence).next()
