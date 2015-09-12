@@ -4,10 +4,6 @@
 import numpy
 
 
-def timesignal(sequence):
-    return numpy.vstack( (numpy.arange(len(sequence)), sequence ))
-
-
 def normalize(signal):
     """
     Scales `signal` to fit into the [-1...1] range of values. Specifically,
@@ -30,17 +26,33 @@ def normalized(signal):
 
 
 def argmin(signal):
+    """
+
+        >>> from rvlm.labhelpers.tabular import tabular
+        >>> sig = tabular([[ 1,  2,  3,  4, 5,  6,  7,  8,  9], \
+                           [86, 28, 35, 24, 4, 92, 14, 78, 35]]).transpose()
+        >>> argmin(sig)
+        5
+
+    :param signal:
+    :return:
+    """
     return signal[numpy.argmin(signal[:, 1]), 0]
 
 
 def argmax(signal):
+    """
+
+        >>> from rvlm.labhelpers.tabular import tabular
+        >>> sig = tabular([[ 1,  2,  3,  4, 5,  6,  7,  8,  9], \
+                           [86, 28, 35, 24, 4, 92, 14, 78, 35]]).transpose()
+        >>> argmax(sig)
+        6
+
+    :param signal:
+    :return:
+    """
     return signal[numpy.argmax(signal[:, 1]), 0]
-
-
-def signal_max_shift(reference, signal):
-    """
-    """
-    return argmax(signal) - argmax(reference)
 
 
 def signal_energy(signal, equidistant=False):
