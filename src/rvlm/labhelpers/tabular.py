@@ -60,20 +60,20 @@ def tabularf(data, funcs = []):
 
         >>> import operator
         >>> tabularf([1, 2, 3, 4], [operator.neg])
-        array([[1, -1],
-               [2, -2],
-               [3, -3],
-               [4, -4]])
+        array([[ 1, -1],
+               [ 2, -2],
+               [ 3, -3],
+               [ 4, -4]])
         >>> tabularf([[1, 2], [3,4]], [operator.add, operator.mul])
-        array([[1, 2, 3,  2],
-               [3, 4, 7, 12]])
+        array([[ 1,  2,  3,  2],
+               [ 3,  4,  7, 12]])
 
     :param data:
     :param funcs:
     :return:
     """
     args  = tabular(data)
-    fvals = numpy.apply_along_axis(partial(applyfs, funcs), 1, args)
+    fvals = numpy.apply_along_axis(lambda vals: list(applyfs(funcs, vals)), 1, args)
     return hstack_skip_empty(args, fvals)
 
 

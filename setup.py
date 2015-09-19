@@ -1,6 +1,10 @@
 #!/usr/bin/env python
 import os
+import sys
 from setuptools import setup
+
+# Damn you Guido.
+assert sys.version_info.major >= 3, "Python 2.* is not supported"
 
 
 def slurp(filename):
@@ -14,7 +18,7 @@ def slurp(filename):
 
 setup(
     name               = "rvlm.labhelpers",
-    version            = "0.0.6",
+    version            = "0.1.0.0",
     packages           = ["rvlm", "rvlm.labhelpers"],
     namespace_packages = ["rvlm"],
     package_dir        = {'': "src"},
@@ -29,8 +33,6 @@ setup(
                           "signals and antennas) during my PhD at Voronezh "
                           "State University."),
     classifiers        = ["Programming Language :: Python",
-                          "Programming Language :: Python :: 2.6",
-                          "Programming Language :: Python :: 2.7",
                           "Programming Language :: Python :: 3",
                           "Development Status :: 2 - Pre-Alpha",
                           "Environment :: Console",

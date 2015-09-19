@@ -16,6 +16,28 @@ languages, like :func:`head`.
 """
 
 
+def ipairs(iterable):
+    """
+
+    :param iterable:
+    :return:
+
+        >>> for i, v in ipairs(["foo", "bar", "qux"]): print(i, v)
+        0 foo
+        1 bar
+        2 qux
+        >>> for i, v in ipairs(range(3)): print(i, v)
+        0 0
+        1 1
+        2 2
+
+    """
+    i = 0
+    for v in iterable:
+        yield (i, v)
+        i += 1
+
+
 def omit_empty_items(sequence):
     """
     Filters out sequence items which are :const:`None` or empty. If argument is
@@ -24,6 +46,7 @@ def omit_empty_items(sequence):
     """
     return None if sequence is None \
         else filter(lambda x: (x is not None) and (len(x) != 0), sequence)
+
 
 def tuple1(lst):
     """
@@ -54,9 +77,9 @@ def applyfs(funcs, args):
     a list of functions, applies each to given arguments, and returns the list
     of obtained results. For example:
 
-        >>> from operator import add, sub, mul, div
-        >>> applyfs([add, sub, mul, div], (10, 2))
-        [12, 8, 20, 5]
+        >>> from operator import add, sub, mul
+        >>> list(applyfs([add, sub, mul], (10, 2)))
+        [12, 8, 20]
 
     :param funcs: List of functions.
     :param args:  List or tuple of arguments to apply to each function.
