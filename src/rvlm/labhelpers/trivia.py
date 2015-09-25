@@ -14,6 +14,7 @@ languages, like :func:`head`.
 :copyright: 2015, Pavel Kretov
 :license: MIT
 """
+import itertools as _itertools
 
 
 def ipairs(iterable):
@@ -112,4 +113,64 @@ def unpackf(func):
     :param func: Callable object, taking a number of positional parameters.
     :return:     Wrapper function, taking a single list parameter.
     """
-    return (lambda args: func(*args))
+    return lambda args: func(*args)
+
+
+def iterate_range(range_tuple, num):
+    """
+    Yields `num` floating-point numbers evenly spaced within `range_tuple`,
+    including endpoints.
+
+    :param range_tuple: Range tuple :math:`(a, b)`.
+    :param num:         Number of points to generate.
+    :return:            Enumeration of evenly spaced points within
+                        :math:`[a, b]` range.
+
+    Examples:
+
+        >>> list(iterate_range((0, 1), num=5))
+        [0.0, 0.25, 0.5, 0.75, 1.0]
+        >>> list(iterate_range((1, 0), num=5))
+        [1.0, 0.75, 0.5, 0.25, 0.0]
+        >>> list(iterate_range((0, 0), num=5))
+        [0.0, 0.0, 0.0, 0.0, 0.0]
+
+    """
+    a, b = range_tuple
+    delta = (b - a) / (num - 1)
+    for i in range(num):
+        yield a + delta*i
+
+
+def iterate_ranges(range_tuples, nums):
+    """
+    Yields all points of N-dimensional regular rectangular grid.
+
+    :param range_tuples:
+        List of :math:`(a_i, b_i)` tuples, where :math`i` is
+        the number of grid dimensions.
+
+    :param nums:
+        List of number of points for grid's :math:`i`-th dimension. This list
+        must be the same length as `range_tuples`.
+
+    :return:
+        Enumerates all grid points as cartesian product of N axes grids, in
+        lexicographic order and including :math:`a_i` and `b_i`.
+
+        >>> from pprint import pprint
+        >>> pprint(list(iterate_ranges([(0, 1), (0, 1)], [2, 5])))
+        [(0.0, 0.0),
+         (0.0, 0.25),
+         (0.0, 0.5),
+         (0.0, 0.75),
+         (0.0, 1.0),
+         (1.0, 0.0),
+         (1.0, 0.25),
+         (1.0, 0.5),
+         (1.0, 0.75),
+         (1.0, 1.0)]
+
+    """
+    ranges = [iterate_range(tpl, num) for tpl, num in zip(range_tuples, nums)]
+    return _itertools.product(*ranges)
