@@ -194,3 +194,16 @@ def iterate_ranges(range_tuples, nums):
     """
     ranges = [iterate_range(tpl, num) for tpl, num in zip(range_tuples, nums)]
     return _itertools.product(*ranges)
+
+
+def with_file(f, filename, *args, **kwargs):
+    """
+
+    :param f:
+    :param filename:
+    :param args:
+    :param kwargs:
+    :return:
+    """
+    with open(filename) as stream:
+        return f(stream, *args, **kwargs)
