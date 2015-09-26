@@ -18,7 +18,7 @@ too, but they're short and concise, and do their work.
 :license: MIT
 """
 import re
-from rvlm.labhelpers.trivia import tuple1
+from rvlm.labhelpers.trivia import tuple1, head
 
 
 def mapk(f, dic):
@@ -27,9 +27,14 @@ def mapk(f, dic):
     `k → v` mapping, this function returns another dictionary `f(k) → v`. If
     `f` doesn't produce unique result for each key present in `dic`, then an
     exception is raised.
+
+        >>> m = mapk(str.upper, dict(a=1, b=2, c=3))
+        >>> sorted(list(m.keys()))
+        ['A', 'B', 'C']
+
     """
     result = {}
-    for k, v in dic.iteritems():
+    for k, v in dic.items():
         result[f(k)] = v
 
     return result
@@ -39,12 +44,37 @@ def mapv(f, dic):
     """
     Maps dictionary values against function `f`. Just like :func:`mapk`, this
     function converts `k → v` dictionary into `k → f(v)`.
+
+        >>> m = mapv(lambda v: v*10, dict(a=1, b=2, c=3))
+        >>> sorted(list(m.values()))
+        [10, 20, 30]
+
     """
     result = {}
-    for k, v in dic.iteritems():
+    for k, v in dic.items():
         result[k] = f(v)
 
     return result
+
+
+def onlyk(dic):
+    """
+
+        >>> onlyk(dict(a=42))
+        'a'
+
+    """
+    return head(dic.items())[0]
+
+
+def onlyv(dic):
+    """
+
+        >>> onlyv(dict(a=42))
+        42
+
+    """
+    return head(dic.items())[1]
 
 
 def extract_keys(dic, pattern, keytypes=float):
