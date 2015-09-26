@@ -1,7 +1,12 @@
 # -*- coding: utf-8 -*-
 """
-`rvlm.labhelpers.trivia`: trivial things Python lacks
-=====================================================
+:copyright: 2015, Pavel Kretov
+:license: MIT
+
+Trivial things Python lacks
+===========================
+
+    import rvlm.labhelpers.trivia
 
 This is a helper module, providing some trivial, but still useful and
 convenient helper functions, which are absent from the standard library for
@@ -10,9 +15,6 @@ claims to be the pythonic™ way to do things.
 
 Many of the module function try to resemble things widely used in functional
 languages, like :func:`head`.
-
-:copyright: 2015, Pavel Kretov
-:license: MIT
 """
 import itertools as _itertools
 
@@ -44,6 +46,13 @@ def omit_empty_items(sequence):
     Filters out sequence items which are :const:`None` or empty. If argument is
     :const:`None` than the return value is :const:`None` too, but if argument
     is an empty sequence, another empty sequence is returned.
+
+        >>> list(omit_empty_items([]))
+        []
+        >>> list(omit_empty_items(["", "1", "", "23"]))
+        ['1', '23']
+
+
     """
     return None if sequence is None \
         else filter(lambda x: (x is not None) and (len(x) != 0), sequence)
@@ -65,9 +74,18 @@ def tuple1(lst):
 def head(sequence):
     """
     Returns first item from `sequence` or :const:`None` if sequence is empty.
+
+        >>> head([1])
+        1
+        >>> head([2, 3])
+        2
+        >>> head([(1, 2), (3, 4)])
+        (1, 2)
+        >>> head()
     """
     try:
-        return iter(sequence).next()
+        return next(iter(sequence))
+
     except StopIteration:
         return None
 
@@ -157,6 +175,8 @@ def iterate_ranges(range_tuples, nums):
     :return:
         Enumerates all grid points as cartesian product of N axes grids, in
         lexicographic order and including :math:`a_i` and `b_i`.
+
+    Examples:
 
         >>> from pprint import pprint
         >>> pprint(list(iterate_ranges([(0, 1), (0, 1)], [2, 5])))
